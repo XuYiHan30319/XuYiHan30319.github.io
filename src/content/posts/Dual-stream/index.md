@@ -25,7 +25,7 @@ c(B) = \begin{cases}
 1, & \text{otherwise}
 \end{cases}
 $$
-MIL也会使用不同的变换f和==排列不变==的函数g来预测标签B
+MIL也会使用不同的变换f和**排列不变**的函数g来预测标签B
 $$
 c(B)=g(f(x_0)...f(x_n))
 $$
@@ -46,12 +46,14 @@ $$
 ![双流架构](./attachments/双流架构示意.png)
 相比与之前的方法,DSMIL同时学习了示例分类器和bag分类器以及bag embedding
 让$B=\{x_1...x_n\}$表示一个WSI包,每个patch都能通过特征提取器f映射为一个embedding$h_i=f(x_i)$
-==第一个流==在每个示例embedding上使用示例分类器,并在后面使用了最大池化
+
+**第一个流**在每个示例embedding上使用示例分类器,并在后面使用了最大池化
 $$
 c_m(B)=max\{W_0H_0,...W_oH_{N-1}\}
 $$
-其中$W_0$是权重向量,因为最大池化是一个置换不变的操作,因此可以这么勇
-==第二个流==聚类了前面的示例Embedding变成bag Embedding,然后使用bag classifier进行打分.我们得到了最重要的embedding $h_m$ 然后把每个示例embedding h_i都转化为两个向量,一个是query和一个information.其中
+其中$W_0$是权重向量,因为最大池化是一个置换不变的操作,因此可以这么用
+
+**第二个流**聚类了前面的示例Embedding变成bag Embedding,然后使用bag classifier进行打分.我们得到了最重要的embedding $h_m$ 然后把每个示例embedding h_i都转化为两个向量,一个是query和一个information.其中
 $$
 q_i=W_qh_i,v_=W_wh_i
 $$
