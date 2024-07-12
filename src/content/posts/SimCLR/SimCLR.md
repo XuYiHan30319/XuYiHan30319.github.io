@@ -102,3 +102,15 @@ $$
 
 到这里我们已经在没有任何标签的情况下训练好了SimCLR模型,让他的Encoder可以输出图片的Representation信息.可以用于迁移学习了.这个时候需要的数据量很小.
 
+**76.5% 是通过Linear Evaluation得到的。**
+
+按照上面的方式进行完Pre-train之后，Encoder部分和Projection head部分的权重也就确定了。那么这个时候我们去掉Projection head的部分，在Encoder输出的 ℎ𝑖,ℎ𝑗 之后再添加一个**线性分类器 (Linear Classifier)**，它其实就是一个FC层。那么我们使用全部的 ImageNet **去训练这个 Linear Classifier**，具体方法是把预训练部分，即 ℎ𝑖,ℎ𝑗 之前的权重frozen住，只训练线性分类器的参数，那么 Test Accuracy 就作为 a proxy for representation quality，就是76.5%。
+
+**85.5% 是通过Fine-tuning得到的。**
+
+按照上面的方式进行完Pre-train之后，Encoder部分和Projection head部分的权重也就确定了。那么这个时候我们去掉Projection head的部分，在Encoder输出的 ℎ𝑖,ℎ𝑗 之后再添加一个**线性分类器 (Linear Classifier)**，它其实就是一个FC层。那么我们使用 **1%的ImageNet 的标签** **去训练整个网络**，不固定 Encoder 的权重了。那么最后的 Test Accuracy 就是85.5%。
+
+Linear Evaluation 和 Fine-tuning的精度的关系如下图20所示：当Linear Evaluation 的精度达到76.5% Top1 Accuracy时，Fine-tuning的精度达到了50多，因为Fine-tuning 只使用了1%的标签，而Linear Evaluation 使用了100%的标签。
+
+![img](https://pic3.zhimg.com/80/v2-f07b8f7427c3fd51b8acb0b3c5e5bc8e_720w.webp)
+
