@@ -3,7 +3,7 @@ title: Dual-stream Multiple Instance Learning Network for Whole Slide Image Clas
 published: 2024-07-09
 description: ''
 image: ''
-tags: [机器学习,病理,分类,弱监督学习]
+tags: [机器学习,病理,分类,弱监督学习,CV]
 category: '论文阅读'
 draft: false 
 ---
