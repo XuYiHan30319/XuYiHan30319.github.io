@@ -101,16 +101,17 @@ $$
 
 而后,~~我痛定思痛~~,我认为可能是初步特征提取的时候没有做好,是resnet18的特征学习能力太差了,需要使用更加深层的网络.于是我才用了resnet50来再一次进行特征提取.使用resnet50之后的模型变慢了,需要好好等等,我在3张3090上进行了训练,batch_size为396,训练的tensorboard如下:
 
-![image-20240714210711119](./assets/image-20240714210711119.png)
 
-![image-20240714210744727](./assets/image-20240714210744727.png)
+<img src="https://p.ipic.vip/vpyitj.png" alt="image-20240715163941718" width="400" height="400">
 
-当然了,我可以在上面的low放大倍数的上面再训练一会让他更加拟合,下面的是训练了一个晚上的成果,他完全拟合了,上面的可以再多训练一会,,不过问题不大.
+<img src="https://p.ipic.vip/ze8f36.png" alt="image-20240714210744727" width="400" height="400">
+
+
 
 训练完特征提取器之后我们计算特征并且进行拼接,每个特征变成4096维度的特征,然后放进去训练,最终得到的结果还是比较好的,
 
-> Mean Accuracy: 0.8041
->
-> Class 0: Mean AUC = 0.8446
->
-> Class 1: Mean Auc = 0.8443
+> Mean Accuracy: 0.8489795918367345
+> 
+> Class 0: Mean AUC = 0.8843
+> 
+> Class 1: Mean AUC = 0.8828
