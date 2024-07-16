@@ -8,7 +8,7 @@ category: '机器学习'
 draft: false 
 ---
 
-![想要找到最优区分点!](https://img-blog.csdnimg.cn/20200828095735518.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5OTE3MzY1,size_16,color_FFFFFF,t_70#pic_center)
+![image-20240716143436985](https://p.ipic.vip/7cmuxm.png)
 
 ROC曲线实际上是多个混淆矩阵的结果组合，以疾病检测为例，这是一个有监督的二分类模型，模型对每个样本的预测结果为一个概率值，我们需要从中选取一个阈值来判断健康与否。定义好一个阈值之后，超过此阈值定义为不健康，低于此阈值定义为健康，就可以得出混淆矩阵。而如果在上述模型中没有定义好阈值，而是将模型预测结果从高到低排序(排不排序都一样，因为我们需要用作作图的TPR和FPR都是根据这些概率值计算出来的，现在不排序，等据图画图的时候也得排序)，将每次概率值依次作为阈值，那么就可以得到多个混淆矩阵。对于每个混淆矩阵，我们计算两个指标TPR和FPR，以FPR为轴，TPR为y轴画图，就得到了ROC曲线。
 
