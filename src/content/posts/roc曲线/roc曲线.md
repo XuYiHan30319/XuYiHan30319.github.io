@@ -3,8 +3,8 @@ title: roc曲线
 published: 2024-07-16
 description: ''
 image: ''
-tags: [模型优化]
-category: '机器学习'
+tags: [模型优化,机器学习]
+category: '模型优化'
 draft: false 
 ---
 
@@ -57,7 +57,6 @@ def optimal_thresh(fpr, tpr, thresholds, p=0):
     loss = (fpr - tpr) - p * tpr / (fpr + tpr + 1)
     idx = np.argmin(loss, axis=0)
     return fpr[idx], tpr[idx], thresholds[idx]
-
 ```
 
-比如在二分类任务中,默认的区分点为0.5,为了寻找最优的分割阈值,我们可以使用ROC曲线来计算得到最优的分割点.我们需要找到最优的平衡点
+比如在二分类任务中,默认的区分点为0.5,而模型在训练的时候实际上并没有训练这个分位点,为了寻找最优的分割阈值,我们可以使用ROC曲线来计算得到最优的分割点.我们需要找到最优的平衡点,比如得到[0.2,0.8]这样的,可以用来提升预测时候的精度.那么当某一个部分的概率大于threshold的时候就会被分类为正例.

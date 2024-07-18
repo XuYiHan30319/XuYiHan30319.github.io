@@ -101,7 +101,6 @@ $$
 
 而后,~~我痛定思痛~~,我认为可能是初步特征提取的时候没有做好,是resnet18的特征学习能力太差了,需要使用更加深层的网络.于是我才用了resnet50来再一次进行特征提取.使用resnet50之后的模型变慢了,需要好好等等,我在3张3090上进行了训练,batch_size为396,训练的tensorboard如下:
 
-
 <img src="https://p.ipic.vip/vpyitj.png" alt="image-20240715163941718" width="400" height="400">
 
 <img src="https://p.ipic.vip/ze8f36.png" alt="image-20240714210744727" width="400" height="400">

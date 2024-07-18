@@ -3,8 +3,8 @@ title: pytorch基本知识
 published: 2024-07-16
 description: ''
 image: ''
-tags: []
-category: '机器学习'
+tags: [机器学习]
+category: ''
 draft: true 
 ---
 
@@ -31,5 +31,4 @@ output –（批大小， 产生的通道数， 卷积后长度）
 卷积后的维度：(n - k + 2 * p ) / s + 1
 k: 卷积核大小，p: 使用边界填充，s: 步长。
 
-![示例](https://img-blog.csdnimg.cn/82bf012182194f80b012e167e08b8a80.png)
-
+![image-20240718132130898](https://p.ipic.vip/1rwxiy.png)
