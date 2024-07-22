@@ -8,7 +8,7 @@ category: '论文阅读'
 draft: false 
 ---
 
-::github{repo="lucidrains/vit-pytorch"}
+::github{repo="google-research/vision_transformer"}
 
 ## 简介
 
