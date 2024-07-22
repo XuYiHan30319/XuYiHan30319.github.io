@@ -3,8 +3,8 @@ title: Swin-Transformer
 published: 2024-07-22
 description: ""
 image: ""
-tags: []
-category: ""
+tags: [机器学习,CVAt]
+category: "论文阅读"
 draft: false
 ---
 
