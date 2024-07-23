@@ -62,6 +62,6 @@ $Q/K/V = W_{q/k/v}A$这里的I表示a1~a4矩阵,然后计算aii,aii的计算由:
 
 ## Transformer
 
-![image-20240722151714617](https://p.ipic.vip/f3j6fl.png)
+<img src="https://p.ipic.vip/f3j6fl.png" alt="image-20240722151714617" style="zoom:50%;" />
 
 在Transformer中大概就是这样.BatchNorm是对每个batch的相同dim做norm,而layer是对每个batch做nrom.Transformer的结构像RNN,所以这里用layernorm.
