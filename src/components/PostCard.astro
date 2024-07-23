@@ -8,32 +8,20 @@ import PostMetadata from './PostMeta.astro'
 import ImageWrapper from './misc/ImageWrapper.astro'
 
 interface Props {
-  class: string
-  entry: any
-  title: string
-  url: string
-  published: Date
-  tags: string[]
-  category: string
-  image: string
-  description: string
-  words: number
-  draft: boolean
-  style: string
+    class?: string;
+    entry: any;
+    title: string;
+    url: string;
+    published: Date;
+    tags: string[];
+    category: string;
+    image: string;
+    description: string;
+    draft: boolean;
+    style: string;
 }
-const {
-  entry,
-  title,
-  url,
-  published,
-  tags,
-  category,
-  image,
-  description,
-  words,
-  style,
-} = Astro.props
-const className = Astro.props.class
+const { entry, title, url, published, tags, category, image, description, style } = Astro.props;
+const className = Astro.props.class;
 
 const hasCover = image !== undefined && image !== null && image !== ''
 
@@ -51,8 +39,8 @@ const { remarkPluginFrontmatter } = await entry.render()
         before:absolute before:top-[35px] before:left-[18px] before:hidden md:before:block
         ">
             {title}
-            <Icon class="inline text-[var(--primary)] md:hidden translate-y-0.5 absolute" name="material-symbols:chevron-right-rounded" size="2rem" ></Icon>
-            <Icon class="text-[var(--primary)] transition hidden md:inline absolute translate-y-0.5 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0" name="material-symbols:chevron-right-rounded" size="2rem" ></Icon>
+            <Icon class="inline text-[2rem] text-[var(--primary)] md:hidden translate-y-0.5 absolute" name="material-symbols:chevron-right-rounded" ></Icon>
+            <Icon class="text-[var(--primary)] text-[2rem] transition hidden md:inline absolute translate-y-0.5 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0" name="material-symbols:chevron-right-rounded"></Icon>
         </a>
 
         <!-- metadata -->
