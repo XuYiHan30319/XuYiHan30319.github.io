@@ -254,3 +254,58 @@ torch.save(discriminator.state_dict(), './save/gan/discriminator.pth')
 ## one-to-oen synthesis
 
 一对一的方合成法以一个可用的对比度作为输入并且生成单个目标对比度.早期的方法通常基于 基于patch的回归,稀疏自垫表示法和atlas,这些方法的性能收到手工设计特征的限制.随着CNN的发展,现在多用CNN等深度学习来one-to-one的图像生成.比如用GAN来,有什么使用3D CNN来生成MR到CT图像的映射(pGAN和cGAN),diffusion model当前也成为了图像生成的一种工具.
+
+
+
+## PatchGAN
+
+```python
+lass NLayerDiscriminator(nn.Module):
+    """Defines a PatchGAN discriminator"""
+
+    def __init__(self, input_nc, ndf=64, n_layers=3, norm_layer=nn.BatchNorm2d):
+        """Construct a PatchGAN discriminator
+        Parameters:
+            input_nc (int)  -- the number of channels in input images
+            ndf (int)       -- the number of filters in the last conv layer
+            n_layers (int)  -- the number of conv layers in the discriminator
+            norm_layer      -- normalization layer
+        """
+        super(NLayerDiscriminator, self).__init__()
+        if type(norm_layer) == functools.partial:  # no need to use bias as BatchNorm2d has affine parameters
+            use_bias = norm_layer.func == nn.InstanceNorm2d
+        else:
+            use_bias = norm_layer == nn.InstanceNorm2d
+
+        kw = 4
+        padw = 1
+        sequence = [nn.Conv2d(input_nc, ndf, kernel_size=kw, stride=2, padding=padw), nn.LeakyReLU(0.2, True)]
+        nf_mult = 1
+        nf_mult_prev = 1
+        for n in range(1, n_layers):  # gradually increase the number of filters
+            nf_mult_prev = nf_mult
+            nf_mult = min(2 ** n, 8)
+            sequence += [
+                nn.Conv2d(ndf * nf_mult_prev, ndf * nf_mult, kernel_size=kw, stride=2, padding=padw, bias=use_bias),
+                norm_layer(ndf * nf_mult),
+                nn.LeakyReLU(0.2, True)
+            ]
+
+        nf_mult_prev = nf_mult
+        nf_mult = min(2 ** n_layers, 8)
+        sequence += [
+            nn.Conv2d(ndf * nf_mult_prev, ndf * nf_mult, kernel_size=kw, stride=1, padding=padw, bias=use_bias),
+            norm_layer(ndf * nf_mult),
+            nn.LeakyReLU(0.2, True)
+        ]
+
+        sequence += [nn.Conv2d(ndf * nf_mult, 1, kernel_size=kw, stride=1, padding=padw)]  # output 1 channel prediction map
+        self.model = nn.Sequential(*sequence)
+
+    def forward(self, input):
+        """Standard forward."""
+        return self.model(input)
+```
+
+其实就是把生成图像的每个区域都说明是真的还是假的,注意到模型的最后一层的输出维度为1,也就是这个区域是真的还是假的,作用是让生成的图像没有那么模糊.损失函数用MSE就可以了(也就是L2损失函数均方误差,L1损失就是MAE平均绝对误差)
+
