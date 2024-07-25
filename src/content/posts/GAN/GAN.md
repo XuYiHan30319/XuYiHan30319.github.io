@@ -238,3 +238,19 @@ torch.save(generator.state_dict(), './save/gan/generator.pth')
 torch.save(discriminator.state_dict(), './save/gan/discriminator.pth')
 ```
 
+## GAN在医学中的应用
+
+大致可以分为
+
+- one-to-oen synthesis methods:从一个模态生成另一个模态
+- Many-to-one sythesis:从给定的几个模态中生成目标模态
+- unified synthesis:可以通过任意模态生成任意模态
+
+当然了,可以看出来unified synthesis是最好的,但是也存在一些问题,比如一些结构细节看不清楚,这因为:
+
+1.  已知的方法依赖于单个encoder或者一些特定模态的encoder来处理输入,不能很好的结合模态之间的数据,这导致了细节的缺失和模态的不完全融合.
+2. 为了确保网络对不同的模态鲁邦,已知的unified方法只是使用了一个最大池化来得到统一的潜在特征.这可能导致模态细节的丢失.
+
+## one-to-oen synthesis
+
+一对一的方合成法以一个可用的对比度作为输入并且生成单个目标对比度.早期的方法通常基于 基于patch的回归,稀疏自垫表示法和atlas,这些方法的性能收到手工设计特征的限制.随着CNN的发展,现在多用CNN等深度学习来one-to-one的图像生成.比如用GAN来,有什么使用3D CNN来生成MR到CT图像的映射(pGAN和cGAN),diffusion model当前也成为了图像生成的一种工具.
