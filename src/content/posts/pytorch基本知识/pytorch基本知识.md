@@ -64,3 +64,7 @@ Batch size的大小一定要大于GPU的数量,实践中batch size的大小一�
 
 device_ids是所有可操作的GPU号,output_device是输出汇总到的指定GPU,默认为device_ids[0]号
 
+## nn.Liner
+在 PyTorch 中，nn.Linear 层的工作原理是对最后一个维度进行线性变换。换句话说，无论输入张量有多少个维度，nn.Linear 层只会对最后一个维度进行线性变换，而不会影响其他维度。因此，如果输入张量的形状是 (batch, n, dim)，那么 nn.Linear 层会对 dim 维度进行变换，而保持 batch 和 n 维度不变。
+
+总之,liner层只会对最后一个维度线性变换.

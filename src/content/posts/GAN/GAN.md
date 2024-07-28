@@ -37,7 +37,7 @@ gan是一个生成和对抗并存的网路,包含一个生成器和一个判别�
 
 比如下图中,generator生成图片来尝试欺骗判别器,判别器尽可能分辨出来.对于判别器来说就是一个二分类任务,用最小交叉熵损失函数就好了.实际训练的时候,我们采用交替训练,首先训练D,然后训练G,不断往复,通常迭代k次判别器,然后迭代一次生成器.目标是在判别器预测概率为1/2的时候效果达到最好,这时候分辨不出来谁是谁生成的了.
 
-模型å代码如下所示:
+模型代码如下所示:
 
 ```python
 import argparse
@@ -251,7 +251,7 @@ torch.save(discriminator.state_dict(), './save/gan/discriminator.pth')
 1.  已知的方法依赖于单个encoder或者一些特定模态的encoder来处理输入,不能很好的结合模态之间的数据,这导致了细节的缺失和模态的不完全融合.
 2. 为了确保网络对不同的模态鲁邦,已知的unified方法只是使用了一个最大池化来得到统一的潜在特征.这可能导致模态细节的丢失.
 
-## one-to-oen synthesis
+## one-to-one synthesis
 
 一对一的方合成法以一个可用的对比度作为输入并且生成单个目标对比度.早期的方法通常基于 基于patch的回归,稀疏自垫表示法和atlas,这些方法的性能收到手工设计特征的限制.随着CNN的发展,现在多用CNN等深度学习来one-to-one的图像生成.比如用GAN来,有什么使用3D CNN来生成MR到CT图像的映射(pGAN和cGAN),diffusion model当前也成为了图像生成的一种工具.
 
@@ -308,4 +308,61 @@ lass NLayerDiscriminator(nn.Module):
 ```
 
 其实就是把生成图像的每个区域都说明是真的还是假的,注意到模型的最后一层的输出维度为1,也就是这个区域是真的还是假的,作用是让生成的图像没有那么模糊.损失函数用MSE就可以了(也就是L2损失函数均方误差,L1损失就是MAE平均绝对误差)
+
+## ResViT代码结构
+
+首先是损失函数
+
+```python
+# Defines the GAN loss which uses either LSGAN or the regular GAN.
+# When LSGAN is used, it is basically same as MSELoss,
+# but it abstracts away the need to create the target label tensor
+# that has the same size as the input
+class GANLoss(nn.Module):
+    def __init__(
+        self,
+        use_lsgan=True,
+        target_real_label=1.0,
+        target_fake_label=0.0,
+        tensor=torch.FloatTensor,
+    ):
+        super(GANLoss, self).__init__()
+        self.real_label = target_real_label
+        self.fake_label = target_fake_label
+        self.real_label_var = None
+        self.fake_label_var = None
+        self.Tensor = tensor
+        if use_lsgan:
+            self.loss = nn.MSELoss()
+        else:
+            self.loss = nn.BCELoss()
+
+    # 创建对应的标签,分别存在self.real_label_var和self.fake_label_var中,如果标签的大小不一致,那么重新创建
+    def get_target_tensor(self, input, target_is_real):
+        target_tensor = None
+        if target_is_real:
+            create_label = (self.real_label_var is None) or (
+                self.real_label_var.numel() != input.numel()
+            )
+            if create_label:
+                real_tensor = self.Tensor(input.size()).fill_(self.real_label)
+                self.real_label_var = Variable(real_tensor, requires_grad=False)
+            target_tensor = self.real_label_var
+        else:
+            create_label = (self.fake_label_var is None) or (
+                self.fake_label_var.numel() != input.numel()
+            )
+            if create_label:
+                fake_tensor = self.Tensor(input.size()).fill_(self.fake_label)
+                self.fake_label_var = Variable(fake_tensor, requires_grad=False)
+            target_tensor = self.fake_label_var
+        return target_tensor
+
+    def __call__(self, input, target_is_real):
+        target_tensor = self.get_target_tensor(input, target_is_real)
+        return self.loss(input, target_tensor)
+
+```
+
+这个损失函数跟mae差不多,主要是可以自动生成标签~,生成的标签是一个二维的全1或者全0的矩阵
 
