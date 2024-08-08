@@ -1,27 +1,37 @@
 ---
 import path from 'path'
-import { Icon } from 'astro-icon/components'
-import I18nKey from '../i18n/i18nKey'
-import { i18n } from '../i18n/translation'
-import { getDir } from '../utils/url-utils'
 import PostMetadata from './PostMeta.astro'
 import ImageWrapper from './misc/ImageWrapper.astro'
+import { Icon } from 'astro-icon/components'
+import { i18n } from '../i18n/translation'
+import I18nKey from '../i18n/i18nKey'
+import { getDir } from '../utils/url-utils'
 
 interface Props {
-    class?: string;
-    entry: any;
-    title: string;
-    url: string;
-    published: Date;
-    tags: string[];
-    category: string;
-    image: string;
-    description: string;
-    draft: boolean;
-    style: string;
+  class?: string
+  entry: any
+  title: string
+  url: string
+  published: Date
+  tags: string[]
+  category: string
+  image: string
+  description: string
+  draft: boolean
+  style: string
 }
-const { entry, title, url, published, tags, category, image, description, style } = Astro.props;
-const className = Astro.props.class;
+const {
+  entry,
+  title,
+  url,
+  published,
+  tags,
+  category,
+  image,
+  description,
+  style,
+} = Astro.props
+const className = Astro.props.class
 
 const hasCover = image !== undefined && image !== null && image !== ''
 
@@ -47,8 +57,8 @@ const { remarkPluginFrontmatter } = await entry.render()
         <PostMetadata published={published} tags={tags} category={category} hideTagsForMobile={true} class="mb-4"></PostMetadata>
 
         <!-- description -->
-        <div class="transition text-75 mb-3.5 pr-4">
-            { description }
+        <div class:list={["transition text-75 mb-3.5 pr-4", {"line-clamp-2 md:line-clamp-1": !description}]}>
+            { description || remarkPluginFrontmatter.excerpt }
         </div>
 
         <!-- word count and read time  -->
